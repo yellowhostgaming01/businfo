@@ -1,0 +1,238 @@
+/* Custom Confirmation Dialog Styles */
+.custom-confirm-dialog {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-confirm-content {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  max-width: 400px;
+  text-align: center;
+}
+
+.custom-confirm-content h3 {
+  margin-bottom: 15px;
+}
+
+.custom-confirm-content p {
+  margin-bottom: 20px;
+}
+
+.custom-confirm-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.custom-confirm-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.custom-confirm-buttons #confirmYes {
+  background-color: #28a745;
+  color: white;
+}
+
+.custom-confirm-buttons #confirmYes:hover {
+  background-color: #218838;
+}
+
+.custom-confirm-buttons #confirmNo {
+  background-color: #dc3545;
+  color: white;
+}
+
+.custom-confirm-buttons #confirmNo:hover {
+  background-color: #c82333;
+}
+
+/*custom alert bar*/
+.customalertbar {
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  padding: 10px;
+  text-align: center;
+  background-color: #e5e5e5;
+  position: fixed;
+  z-index: 1000;
+  top: 40%;
+  left: 50%;
+  border: solid;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.customalertbar h2 {
+  color: #52cac8;
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.customalertbar hr {
+  border: none;
+  border-bottom: 2px solid #d14aea;
+  margin: 10px 0;
+}
+
+.sms-content {
+  padding: 10px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  text-align: left;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.sms-content span {
+  font-weight: bold;
+}
+
+.sms-content p {
+  display: inline;
+}
+
+.customalertbar .closebtn {
+  position: absolute;
+  right: 10px;
+  cursor: pointer;
+  color: #777;
+  font-size: 40px;
+}
+
+.closebtn:hover {
+  color: #333;
+}
+
+/*lloader*/
+#loader-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 1); /* Semi-transparent background */
+}
+
+.loader {
+  position: relative;
+  width: 100px; /* Default width */
+  height: 100px; /* Default height */
+}
+
+.logo {
+  position: absolute;
+  top: calc(50% + 8px);
+  left: calc(50px + 8px);
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: auto;
+  z-index: 10;
+  background-color: #fff;
+  border-radius: 50%;
+}
+
+.bg {
+  z-index: 999;
+  height: 100%;
+  animation: spin-op ease-in 3s forwards;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin-op {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+/*setting page*/
+.setting-page {
+  position: absolute;
+  margin: 5px 10px;
+  width: calc(100% - 60px);
+  z-index: 999999999999999;
+  top: 5px;
+  display: none;
+  padding: 20px;
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.setting-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  border-bottom: 1px solid;
+}
+
+.setting-group select {
+  width: 50%;
+  text-align: center;
+}
+
+.setting-group label {
+  flex-basis: 150px;
+}
+
+.setting-group input {
+  flex: 1;
+  width: 100%;
+  height: 30px;
+  outline: none;
+  padding: 5px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+.setting-group input[type="button"] {
+  background-color: #00ff78;
+}
+
+button#save-settings {
+  width: unset;
+  display: block;
+  margin: 0 auto;
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.sgC {
+  position: relative;
+  right: 30px;
+  top: -2px;
+}

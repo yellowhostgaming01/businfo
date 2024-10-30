@@ -1,0 +1,299 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #f0f2f5;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  user-select: none;
+}
+
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 900px;
+  margin: 5% 0;
+  transition: transform 0.3s ease;
+}
+
+.container:hover {
+  transform: translateY(-5px);
+}
+
+.container.fixed {
+  position: fixed;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%);
+  width: 80%;
+  max-width: 600px;
+  z-index: 10;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+  font-family: "Roboto Slab", serif;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  margin-bottom: 5px;
+  font-weight: bold;
+  color: #555;
+}
+
+input {
+  margin-bottom: 15px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+  transition: border-radius 0.3s ease;
+}
+
+input:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+button {
+  padding: 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+.table-wrapper {
+  overflow: auto;
+  border: 1px solid #ddd;
+  max-height: 500px;
+  border-radius: 6px;
+  margin: 5% 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 12px;
+  border: 1px solid #ddd;
+  text-align: left;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: background-color 0.3s ease;
+}
+
+th {
+  background-color: #007bff;
+  color: white;
+  font-weight: bold;
+}
+
+td:hover {
+  background-color: #f1f1f1;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 18px;
+  color: #007bff;
+  transition: color 0.3s ease;
+}
+
+.icon:hover {
+  color: #0056b3;
+}
+
+#closeEditForm {
+  cursor: pointer;
+  float: right;
+  font-size: 24px;
+  margin-left: 10px;
+  color: #333;
+}
+
+.floating-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 15px 25px;
+  background-color: #22c047;
+  color: white;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+#saveChanges {
+  right: unset;
+  left: 20px;
+  background-color: #007bff;
+}
+
+#saveChanges:hover {
+  background-color: #1bd7a2;
+}
+
+.floating-button:hover {
+  background-color: #218838;
+  transform: translateY(-3px);
+}
+
+/* Media Queries for Mobile Responsiveness */
+@media (max-width: 768px) {
+  body {
+    padding: 5px;
+  }
+
+  .container {
+    width: 95%;
+    margin: 5% 0;
+  }
+
+  .container.fixed {
+    width: 90%;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  input {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  th,
+  td {
+    padding: 10px;
+    font-size: 14px;
+  }
+
+  .floating-button {
+    font-size: 14px;
+    padding: 10px 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  h1,
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  input {
+    font-size: 12px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 8px;
+  }
+
+  th,
+  td {
+    padding: 8px;
+    font-size: 12px;
+  }
+
+  .floating-button {
+    font-size: 12px;
+    padding: 8px 15px;
+  }
+}
+
+.yhg {
+  max-height: 430px;
+  overflow-y: auto;
+}
+
+.yhg::-webkit-scrollbar {
+  display: none;
+}
+
+.yhg {
+  .stops-handler-main {
+    flex-direction: inherit !important;
+    background-color: red;
+    padding: 5px;
+
+    .shssi {
+      border-bottom: 1px solid;
+      display: inline;
+      flex-direction: unset;
+      padding-bottom: 0;
+
+      input {
+        width: 80%;
+        margin-bottom: 2px;
+      }
+
+      button {
+        /* margin-left: calc(100% - (80% + 19%)); */
+        width: 100%;
+      }
+    }
+    .shsd-every {
+      display: inline-block;
+      border-bottom: 1px solid;
+
+      div {
+        display: inline-block;
+      }
+
+      .actions-shsde {
+      }
+    }
+  }
+}
