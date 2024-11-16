@@ -1,7 +1,3 @@
-var elt = function (tag) {
-  return document.createElement(tag);
-};
-
 var currentEdit = null;
 let currentTest = null;
 var currentEditS = null;
@@ -13,6 +9,36 @@ let fillersElt = {
   VV: document.querySelector(".yhg #vendor"),
   HV: document.querySelector(".yhg #depo"),
   RV: document.querySelector(".yhg #route"),
+};
+let page = null;
+
+function serialize(pageType) {
+  if (pageType.split("_data")) {
+    pageType = pageType.split("_data")[0];
+  }
+
+  _("#addDataButton").attr("open", capitalize(pageType));
+
+  // elements
+  var headingList = document.querySelector("#List h2 span");
+  headingList.innerHTML = cheker("All", capitalize(pageType), null);
+
+  Object.keys(list).forEach(function (type, index) {
+    var data = list[type],
+      thead = data.thead;
+
+    if (pageType !== null && capitalize(type.split("_data")[0]) === capitalize(pageType)) {
+      serializeEDITADDform(data);
+      headingList.parentElement.parentElement
+        .querySelector("thead")
+        .appendChild(listMaker(thead, "th", "tr"));
+    }
+  });
+}
+
+var serializeEDITADDform = function (data) {
+  let parent = document.querySelector("#busForm .yhg");
+  parent.innerHTML = data.editForm[0];
 };
 
 function renderTable() {
@@ -78,8 +104,48 @@ function renderTable() {
     row.appendChild(actionsCell);
 
     tbody.appendChild(row);
+    serializeDropdown();
   });
 }
+
+function renderStop() {
+  const tbody = document.getElementById("busTable").querySelector("tbody");
+  tbody.innerHTML = "";
+
+  cities.forEach(function (data, index) {
+    var name = data.name,
+      code = data.code;
+
+    const row = document.createElement("tr");
+
+    let nameCell = document.createElement("td");
+    nameCell.innerHTML = cheker("!Available", name, "");
+    row.appendChild(nameCell);
+
+    let codeCell = document.createElement("td");
+    codeCell.innerHTML = cheker("!Available", code, "");
+    row.appendChild(codeCell);
+
+    let actionsCell = document.createElement("td");
+    actionsCell.classList.add("actions");
+    actionsCell.appendChild(
+      actionTool("✏️", "icon", function () {
+        document.getElementById("editFormContainer").style.display = "block";
+        editcity(data, index);
+      })
+    );
+    actionsCell.appendChild(
+      actionTool("❌", "icon", function () {
+        removeData(index);
+        renderStop();
+      })
+    );
+    // actionsCell.classList.add("actions");
+    row.appendChild(actionsCell);
+    tbody.appendChild(row);
+  });
+}
+
 // tools
 function normalizeTimeInput(time) {
   // Default to 8:00 am if no time is provided
@@ -133,6 +199,31 @@ var cheker = function (replacer, str, ...finders) {
   return str;
 };
 
+var listMaker = function (data, tag, appendableTag) {
+  let at = document.createElement(appendableTag);
+  data.forEach(function (data) {
+    let elt = document.createElement(tag);
+    elt.textContent = data;
+
+    at.appendChild(elt);
+  });
+
+  return at;
+};
+
+var editFormMaker = function (data, tag, appendableTag) {};
+
+var actionTool = function (textContent, classN, callback, tag) {
+  let elt = document.createElement(cheker("span", tag, "", undefined));
+  elt.innerHTML = textContent;
+  elt.addEventListener("click", callback);
+  elt.classList.add(classN);
+
+  return elt;
+};
+
+var serializeDropdown = function () {};
+
 function addEditStops(stop, index) {
   const stpNElt = document.getElementById("stopName-sdsh"),
     timingsElt = document.getElementById("timing-sdsh"),
@@ -151,8 +242,8 @@ function addEditStops(stop, index) {
   }
 
   currentTest = {
-    fromV: document.querySelector(".yhg #from").value,
-    toV: document.querySelector(".yhg #to").value,
+    fromV: document.querySelector(".yhg #from").textContent,
+    toV: document.querySelector(".yhg #to").textContent,
     tiv: document.querySelector(".yhg #timing").value,
     vv: document.querySelector(".yhg #vendor").value,
     HV: document.querySelector(".yhg #depo").value,
@@ -200,8 +291,8 @@ function addEditStops(stop, index) {
 function removeStop(index) {
   delete currentEdit.stopsArr[index];
   currentTest = {
-    fromV: document.querySelector(".yhg #from").value,
-    toV: document.querySelector(".yhg #to").value,
+    fromV: document.querySelector(".yhg #from").textContent,
+    toV: document.querySelector(".yhg #to").textContent,
     tiv: document.querySelector(".yhg #timing").value,
     vv: document.querySelector(".yhg #vendor").value,
     HV: document.querySelector(".yhg #depo").value,
@@ -209,6 +300,7 @@ function removeStop(index) {
   };
   editData(currentEdit.oldCategory, currentEdit.index);
 }
+
 function editData(bus, index) {
   var data = bus_data[index];
   var from = data.from,
@@ -223,9 +315,9 @@ function editData(bus, index) {
   var stopsArr = [];
 
   var fromV = document.querySelector(".yhg #from");
-  fromV.value = from;
+  fromV.innerHTML = cheker("Select a City...", from, "");
   var toV = document.querySelector(".yhg #to");
-  toV.value = to;
+  toV.textContent = cheker("Select a City...", to, "");
   var TIV = document.querySelector(".yhg #timing");
   TIV.value = ft + ", " + tt;
   var VV = document.querySelector(".yhg #vendor");
@@ -237,8 +329,8 @@ function editData(bus, index) {
   var parent = _(".dropdownlists").html("");
 
   if (currentTest) {
-    fromV.value = currentTest.fromV;
-    toV.value = currentTest.toV;
+    fromV.innerHTML = currentTest.fromV;
+    toV.innerHTML = currentTest.toV;
     TIV.value = currentTest.tiv;
     VV.value = currentTest.vv;
     HV.value = currentTest.HV;
@@ -298,8 +390,8 @@ function editData(bus, index) {
   _("#pushDataButton").on("click", function () {
     if (currentEdit) {
       data.vendor = capitalize(VV.value);
-      data.from = capitalize(fromV.value);
-      data.to = capitalize(toV.value);
+      data.from = capitalize(fromV.textContent);
+      data.to = capitalize(toV.textContent);
       data.stops = stopsArr;
       data.timings = TIV.value
         .split(",")
@@ -308,8 +400,8 @@ function editData(bus, index) {
       data.handler = capitalize(HV.value);
 
       document.getElementById("editFormContainer").style.display = "none";
-      fromV.value = "";
-      toV.value = "";
+      fromV.textContent = "";
+      toV.textContent = "";
       TIV.value = "";
       VV.value = "";
       HV.value = "";
@@ -330,12 +422,18 @@ function editData(bus, index) {
 }
 
 var removeData = function (index) {
-  delete bus_data[index];
+  // Ensure that the page and index are valid before deleting
+  if (window[page] && window[page].hasOwnProperty(index)) {
+    window[page].splice(index, 1) // Removes the property from the object
+    console.log(`Property at index ${index} has been removed.`);
+  } else {
+    console.log(`Property at index ${index} not found or page does not exist.`);
+  }
 };
 
-renderTable();
 
-function addData() {
+// bus
+function addBus() {
   var length = bus_data.length;
   bus_data.push({
     vendor: "",
@@ -346,26 +444,165 @@ function addData() {
     route: "",
     handler: "",
   });
-  currentAdd = length
+  currentAdd = length;
   editData(bus_data[length], length);
 }
 
+function editcity(city, index) {
+  var data = cities[index];
+  var name = data.name,
+    code = data.code;
+
+  var nameV = document.getElementById("cityname"),
+    codeV = document.getElementById("citycode");
+
+  nameV.value = name;
+  codeV.value = code;
+
+  document
+    .getElementById("pushDataButton")
+    .replaceWith(document.getElementById("pushDataButton").cloneNode(true));
+
+  document
+    .getElementById("pushDataButton")
+    .addEventListener("click", function () {
+      data.name = capitalize(nameV.value);
+      data.code = capitalize(codeV.value);
+      document.getElementById("editFormContainer").style.display = "none";
+      renderStop();
+      nameV.value = "";
+      codeV.value = "";
+    });
+}
+
+function addCities() {
+  var length = cities.length;
+  cities.push({
+    name: "",
+    code: "",
+  });
+  currentAdd = length;
+  editcity(cities[length], length);
+}
+
+// urls setup
 document.ready(function () {
+  var pathnmae = location.href;
+  var splits = pathnmae.split("?page=")[1];
+  page = splits;
+  switch (splits) {
+    case "bus_data":
+      renderTable();
+      // serializeDropdown()
+      _("#List").show();
+      break;
+    case "cities":
+      renderStop();
+      _("#List").show();
+      break;
+    default:
+      _("#List").hide();
+      page = null;
+      break;
+  }
+
+  serialize(page);
+});
+document.ready(function () {
+  const firebaseConfig = {
+    apiKey: "AIzaSyDXwgdo0zLt4QpBt9X-V1R4c8FkOBen-t4",
+    authDomain: "wsmfus.firebaseapp.com",
+    projectId: "wsmfus",
+    storageBucket: "wsmfus.appspot.com",
+    messagingSenderId: "757303413386",
+    appId: "1:757303413386:web:22e3248b5e2be40d3b7b73",
+    measurementId: "G-JQ3YNJX1TY",
+  };
+  const app = firebase.initializeApp(firebaseConfig);
+  const storage = firebase.storage();
+
   _("#closeEditForm").on("click", function () {
     _(this).parent().parent().hide();
     window[_(this).attr("currentType")] = null;
 
     if (currentAdd) {
-      bus_data.splice(bus_data[currentAdd], 1)
-      currentAdd = null
+      window[page].splice(window[page][currentAdd], 1);
+      currentAdd = null;
     }
   });
 
   let addDataButton = document.getElementById("addDataButton");
+  let saveDataButton = document.getElementById("saveChanges");
 
-  addDataButton.addEventListener("click", function (e) {
+  saveDataButton.addEventListener("click", function () {
+    // Get the object from window[page]
+    const pageData = window[page];
+  
+    if (typeof pageData !== 'object') {
+      console.error("Invalid page data: Not an object");
+      return;
+    }
+  
+    // Convert the object to a JSON string
+    const jsonData = JSON.stringify(pageData, null, 2); // Formatting for readability
+  
+    // Create a Blob from the JSON string
+    const file = new Blob(["var " + page + "=" + jsonData], { type: "text/javascript" });
+  
+    // Generate a unique file name (or use page as the file name)
+    const fileName = `${page}.js`;  // Using `.json` extension for the object data
+  
+    // Create a reference in Firebase storage
+    const storageRef = storage.ref(`businfoUS/${fileName}`);
+  
+    // Start uploading the file
+    const uploadTask = storageRef.put(file);
+  
+    // Track upload progress
+    uploadTask.on(
+      "state_changed",
+      (snapshot) => {
+        // Calculate the progress percentage
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log(`Upload is ${progress.toFixed(2)}% done`);
+      },
+      (error) => {
+        // Handle errors
+        console.error("Error during upload:", error);
+      },
+      async () => {
+        // Upload completed successfully
+        const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+        console.log("File uploaded successfully. Download URL:", downloadURL);
+      }
+    );
+  });
+  
+
+  _(addDataButton).on("click", function (e) {
     e.preventDefault();
     document.getElementById("editFormContainer").style.display = "block";
-    addData();
+    window["add" + _(this).attr("open")]();
   });
+
+  var dropdown = document.querySelectorAll(".dropdown");
+
+  dropdown.forEach(function (drop) {
+    let dropAttr = drop.getAttribute("data-type");
+    if (dropAttr === "stops") {
+      cities.forEach((city) => {
+        let elt = document.createElement("option");
+
+        elt.value = city.name;
+        elt.textContent = city.name;
+
+        drop.appendChild(elt);
+      });
+    }
+    createCustomDropdown(drop);
+  });
+});
+
+document.getElementById("saveChanges").addEventListener("click", function () {
+  // bus_data"
 });

@@ -132,9 +132,8 @@ td:hover {
 }
 
 .actions {
-  display: flex;
-  gap: 10px;
 }
+
 
 .icon {
   cursor: pointer;
@@ -275,7 +274,7 @@ td:hover {
       padding-bottom: 0;
 
       input {
-        width: 80%;
+        /* width: 80%; */
         margin-bottom: 2px;
       }
 
@@ -290,9 +289,6 @@ td:hover {
 
       div {
         display: inline-block;
-      }
-
-      .actions-shsde {
       }
     }
   }

@@ -433,11 +433,12 @@ yhgquery.extend = yhgquery.fn.extend = function() {
     i++;
   }
 
+  console.log(target);
+  
   // Handle case when target is a string or something (possible in deep copy)
   if (typeof target !== "object" && !isFunction(target)) {
     target = {};
   }
-console.log(this);
 
   // Extend yhgquery itself if only one argument is passed
   if (i === length) {

@@ -1,10 +1,7 @@
-var elt = function (tag) {
-  return document.createElement(tag);
-};
-
 var currentEdit = null;
 let currentTest = null;
 var currentEditS = null;
+let currentAdd = null;
 let fillersElt = {
   fromV: document.querySelector(".yhg #from"),
   toV: document.querySelector(".yhg #to"),
@@ -13,9 +10,27 @@ let fillersElt = {
   HV: document.querySelector(".yhg #depo"),
   RV: document.querySelector(".yhg #route"),
 };
+let page = null;
+
+function serialize(pageType) {
+  // elements
+  var headingList = document.querySelector("#List h2 span");
+  headingList.innerHTML = cheker("All", capitalize(pageType), null);
+
+  Object.keys(list).forEach(function (type, index) {
+    var data = list[type],
+      thead = data.thead;
+
+    if (capitalize(pageType) === capitalize(type) && pageType !== null) {
+      headingList.parentElement.parentElement
+        .querySelector("thead")
+        .appendChild(listMaker(thead, "th", "tr"));
+    }
+  });
+}
 
 function renderTable() {
-  const tbody = document.getElementById("musicTable").querySelector("tbody");
+  const tbody = document.getElementById("busTable").querySelector("tbody");
   tbody.innerHTML = "";
 
   bus_data.forEach(function (category, index) {
@@ -132,6 +147,20 @@ var cheker = function (replacer, str, ...finders) {
   return str;
 };
 
+var listMaker = function (data, tag, appendableTag) {
+  let at = document.createElement(appendableTag);
+  data.forEach(function (data) {
+    let elt = document.createElement(tag);
+    elt.textContent = data;
+
+    at.appendChild(elt);
+  });
+
+  return at;
+};
+
+var editFormMaker = function (data, tag, appendableTag) {};
+
 function addEditStops(stop, index) {
   const stpNElt = document.getElementById("stopName-sdsh"),
     timingsElt = document.getElementById("timing-sdsh"),
@@ -150,8 +179,8 @@ function addEditStops(stop, index) {
   }
 
   currentTest = {
-    fromV: document.querySelector(".yhg #from").value,
-    toV: document.querySelector(".yhg #to").value,
+    fromV: document.querySelector(".yhg #from").textContent,
+    toV: document.querySelector(".yhg #to").textContent,
     tiv: document.querySelector(".yhg #timing").value,
     vv: document.querySelector(".yhg #vendor").value,
     HV: document.querySelector(".yhg #depo").value,
@@ -199,8 +228,8 @@ function addEditStops(stop, index) {
 function removeStop(index) {
   delete currentEdit.stopsArr[index];
   currentTest = {
-    fromV: document.querySelector(".yhg #from").value,
-    toV: document.querySelector(".yhg #to").value,
+    fromV: document.querySelector(".yhg #from").textContent,
+    toV: document.querySelector(".yhg #to").textContent,
     tiv: document.querySelector(".yhg #timing").value,
     vv: document.querySelector(".yhg #vendor").value,
     HV: document.querySelector(".yhg #depo").value,
@@ -222,9 +251,9 @@ function editData(bus, index) {
   var stopsArr = [];
 
   var fromV = document.querySelector(".yhg #from");
-  fromV.value = from;
+  fromV.innerHTML = cheker("Select a City...", from, "");
   var toV = document.querySelector(".yhg #to");
-  toV.value = to;
+  toV.textContent = cheker("Select a City...", to, "");
   var TIV = document.querySelector(".yhg #timing");
   TIV.value = ft + ", " + tt;
   var VV = document.querySelector(".yhg #vendor");
@@ -236,8 +265,8 @@ function editData(bus, index) {
   var parent = _(".dropdownlists").html("");
 
   if (currentTest) {
-    fromV.value = currentTest.fromV;
-    toV.value = currentTest.toV;
+    fromV.innerHTML = currentTest.fromV;
+    toV.innerHTML = currentTest.toV;
     TIV.value = currentTest.tiv;
     VV.value = currentTest.vv;
     HV.value = currentTest.HV;
@@ -297,8 +326,8 @@ function editData(bus, index) {
   _("#pushDataButton").on("click", function () {
     if (currentEdit) {
       data.vendor = capitalize(VV.value);
-      data.from = capitalize(fromV.value);
-      data.to = capitalize(toV.value);
+      data.from = capitalize(fromV.textContent);
+      data.to = capitalize(toV.textContent);
       data.stops = stopsArr;
       data.timings = TIV.value
         .split(",")
@@ -307,8 +336,8 @@ function editData(bus, index) {
       data.handler = capitalize(HV.value);
 
       document.getElementById("editFormContainer").style.display = "none";
-      fromV.value = "";
-      toV.value = "";
+      fromV.textContent = "";
+      toV.textContent = "";
       TIV.value = "";
       VV.value = "";
       HV.value = "";
@@ -318,6 +347,7 @@ function editData(bus, index) {
     }
 
     currentEdit = null;
+    currentAdd = null;
   });
 
   currentEdit = {
@@ -331,8 +361,6 @@ var removeData = function (index) {
   delete bus_data[index];
 };
 
-renderTable();
-
 function addData() {
   var length = bus_data.length;
   bus_data.push({
@@ -344,13 +372,53 @@ function addData() {
     route: "",
     handler: "",
   });
+  currentAdd = length;
   editData(bus_data[length], length);
 }
 
+// urls setup
 document.ready(function () {
+  var pathnmae = location.href;
+  var splits = pathnmae.split("?page=")[1];
+
+  page = splits;
+  switch (splits) {
+    case "bus":
+      renderTable();
+      _("#List").show();
+      break;
+    case "stop":
+      _("#List").show();
+      break;
+    default:
+      _("#List").hide();
+      page = null;
+      break;
+  }
+
+  serialize(page);
+});
+document.ready(function () {
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyDXwgdo0zLt4QpBt9X-V1R4c8FkOBen-t4",
+    authDomain: "wsmfus.firebaseapp.com",
+    projectId: "wsmfus",
+    storageBucket: "wsmfus.appspot.com",
+    messagingSenderId: "757303413386",
+    appId: "1:757303413386:web:22e3248b5e2be40d3b7b73",
+    measurementId: "G-JQ3YNJX1TY",
+  };
+  const app = firebase.initializeApp(firebaseConfig);
+  const storage = firebase.storage();
   _("#closeEditForm").on("click", function () {
     _(this).parent().parent().hide();
     window[_(this).attr("currentType")] = null;
+
+    if (currentAdd) {
+      bus_data.splice(bus_data[currentAdd], 1);
+      currentAdd = null;
+    }
   });
 
   let addDataButton = document.getElementById("addDataButton");
@@ -360,4 +428,26 @@ document.ready(function () {
     document.getElementById("editFormContainer").style.display = "block";
     addData();
   });
+
+  var dropdown = document.querySelectorAll(".dropdown");
+
+  dropdown.forEach(function (drop) {
+    let dropAttr = drop.getAttribute("data-type");
+    if (dropAttr === "stops") {
+      cities.forEach((city) => {
+        let elt = document.createElement("option");
+
+        elt.value = city.name;
+        elt.textContent = city.name;
+
+        drop.appendChild(elt);
+      });
+    }
+
+    createCustomDropdown(drop);
+  });
 });
+
+document.getElementById('saveChanges').addEventListener('click', function(){
+  // bus_data"
+})
