@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Businfo</title>
+    <link rel="stylesheet" href="assets/lib/custom/custom.css" />
+    <link rel="stylesheet" href="assets/fonts/opfonts/style.css" />
+    <link rel="stylesheet" href="assets/bundle/app.bundle.css" />
+  </head>
+
+  <body>
+    <header class="header" style="opacity: 1; visibility: visible">
+      <span class="menu-icon" onclick=""><i class="opf opf-menu"></i></span>
+      <div class="header-area section" id="header-area">
+        <div class="widget Header" id="Header1">
+          <div id="header-inner">
+            <div class="titlewrapper">
+              <h1 class="title">Businfo</h1>
+            </div>
+          </div>
+        </div>
+        <div class="widget LinkList" id="LinkList3">
+          <div>
+            <div class="nav-head">
+              <h1>BusInfo</h1>
+              <span class="menu-close"><i class="opf opf-clear"></i></span>
+            </div>
+            <div id="dropmenu">
+              <ul id="menu1">
+                <li><a href="#" open-window="setting-page">Setting</a></li>
+                <li><a>Login</a></li>
+              </ul>
+            </div>
+            <div class="clear"></div>
+          </div>
+        </div>
+      </div>
+      <span><i class="opf opf-share"></i></span>
+      <div class="webSite"></div>
+      <span><i class="opf opf-search"></i></span>
+    </header>
+    <div id="search-box">
+      <input
+        name="q"
+        placeholder="Search...."
+        type="search"
+        value="selecturlsOfImages"
+      />
+      <span class="closebtn" onclick="closeSearch()">&#215;</span>
+    </div>
+
+    <!-- <div class="breadcrumb-navigation-main">
+    <div class="bcn">
+      <span pageURL="">Home</span><i class="yhgi yhgi-chevron-right-24"></i>
+    </div>
+  </div> -->
+
+    <!--tabs-->
+    <div class="tabs-main-table" bcnavigation="Home">
+      <div class="tabs-tab1" work="search_busses">
+        <i class="opf-search opf"></i>
+        <br />
+        <span>Search Bus</span>
+      </div>
+      <yhg-devider-center></yhg-devider-center>
+      <div class="tabs-tab2">
+        <i class="opf opf-add_call"></i>
+        <br />
+        <span>Bus Helpline</span>
+      </div>
+      <br />
+      <yhg-bottom></yhg-bottom>
+      <div class="tabs-tab3">
+        <i class="opf-business opf"></i>
+        <br />
+        <span>Cities</span>
+      </div>
+      <yhg-devider-center></yhg-devider-center>
+      <div class="tabs-tab4">
+        <i class="opf opf-commute"></i>
+        <br />
+        <span>Vehicle Details</span>
+      </div>
+    </div>
+
+    <div class="form-data-main-table"></div>
+  </body>
+  <script src="assets/lib/yhgquery.js"></script>
+  <script src="assets/bundle/data.fetching.js"></script>
+  <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fbus_data.js?alt=media&token=0ec20260-0961-4643-98ba-a072cc403338"></script>
+  <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fcities.js?alt=media&token=ec4e647d-f887-461b-9dc7-f409d4ace02c"></script>
+  <script src="assets/lib/custom/custom.js"></script>
+  <script src="assets/bundle/app.bundle.js"></script>
+</html>

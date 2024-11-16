@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="stylesheet" href="assets/fonts/opfonts/style.css" />
+    <link rel="stylesheet" href="assets/lib/custom/custom.css" />
+    <title>Dynamic Configurable Loader</title>
+  </head>
+  <body>
+    <div class="container fixed" id="editFormContainer" style="display: none">
+      <h1>
+        Add/edit <span>Bus</span> List
+        <span id="closeEditForm" currentType="currentEdit">&#215;</span>
+      </h1>
+      <form id="busForm">
+        <div class="yhg"></div>
+
+        <button type="button" id="pushDataButton">Push Data</button>
+      </form>
+    </div>
+
+    <div class="container fixed" id="addsdata" style="display: none">
+      <h1>
+        add Stop List
+        <span id="closeEditForm" currentType="currentEditS">&#215;</span>
+      </h1>
+      <form id="addstopdata">
+        <div class="yhg">
+          <label for="">Name:-</label>
+          <input type="text" name="" id="stopName-sdsh" />
+
+          <label for="">Timings</label>
+          <input
+            type="text"
+            name=""
+            id="timing-sdsh"
+            placeholder="from time, to time"
+          />
+
+          <label for="">Distance:</label>
+          <input type="text" id="distnace-sdsh" />
+        </div>
+        <button type="button" id="addsdBTN">Add Data</button>
+      </form>
+    </div>
+
+    <div class="container table-container" id="List">
+      <h2><span>Bus</span> List</h2>
+      <hr />
+      <div class="table-wrapper">
+        <table id="busTable">
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+    <button id="addDataButton" class="floating-button">Add Data</button>
+    <button id="saveChanges" class="floating-button save-changes">
+      Save Changes
+    </button>
+    <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
+    <script src="assets/lib/yhgquery.js"></script>
+    <script src="assets/lib/yhg_serialize.js"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fbus_data.js?alt=media&token=0ec20260-0961-4643-98ba-a072cc403338"></script>
+    <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fcities.js?alt=media&token=ec4e647d-f887-461b-9dc7-f409d4ace02c"></script>
+    <script src="assets/lib/custom/custom.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
