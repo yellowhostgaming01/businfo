@@ -34,11 +34,39 @@ function serialize(pageType) {
         .appendChild(listMaker(thead, "th", "tr"));
     }
   });
+
+  
 }
 
 var serializeEDITADDform = function (data) {
   let parent = document.querySelector("#busForm .yhg");
   parent.innerHTML = data.editForm[0];
+
+  var dropdown = document.querySelectorAll(".dropdown");
+
+
+  dropdown.forEach(function (drop) {
+    let dropAttr = drop.getAttribute("data-type");
+    if (dropAttr == "stops") {
+      if(cities.length > 0) {
+        cities.forEach((city) => {
+          let elt = document.createElement("option");
+  
+          elt.value = city.name;
+          elt.textContent = city.name;
+  
+          drop.appendChild(elt);
+        });
+      } else {
+        let elt = document.createElement("option");
+  
+          elt.value = 'not';
+          elt.textContent = 'no data';
+      }
+    }
+    
+    createCustomDropdown(drop);
+  });
 };
 
 function renderTable() {
@@ -585,22 +613,7 @@ document.ready(function () {
     window["add" + _(this).attr("open")]();
   });
 
-  var dropdown = document.querySelectorAll(".dropdown");
-
-  dropdown.forEach(function (drop) {
-    let dropAttr = drop.getAttribute("data-type");
-    if (dropAttr === "stops") {
-      cities.forEach((city) => {
-        let elt = document.createElement("option");
-
-        elt.value = city.name;
-        elt.textContent = city.name;
-
-        drop.appendChild(elt);
-      });
-    }
-    createCustomDropdown(drop);
-  });
+  
 });
 
 document.getElementById("saveChanges").addEventListener("click", function () {
