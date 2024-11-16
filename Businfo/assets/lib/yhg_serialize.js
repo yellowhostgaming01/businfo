@@ -17,7 +17,11 @@ var list = {
         class="dropdown"
         data-id="from"
         data-type="stops"
-      ></select>
+      ><option value="fsd">Select stop</option></select>
+      <label for="">To</label>
+      <select name="" class="dropdown" data-id="to" data-type="stops">
+        <option value="fsd">Select stop</option>
+      </select>
 
       <label for="">Timings</label>
       <input
@@ -61,10 +65,7 @@ var list = {
 
       <label for="">Route</label>
       <input type="text" id="route" />
-      <label for="">To</label>
-      <select name="" class="dropdown" data-id="to" data-type="stops">
-        <option value="fsd">Select stop</option>
-      </select>
+      
 
       <label for="">bus type</label>
       <input type="text" id="bus-type" />`,

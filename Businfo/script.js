@@ -59,7 +59,6 @@ var serializeEDITADDform = function (data) {
         });
       } else {
         let elt = document.createElement("option");
-  
           elt.value = 'not';
           elt.textContent = 'no data';
       }
