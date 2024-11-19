@@ -1,3 +1,153 @@
+document.addEventListener("DOMContentLoaded", function () {
+  var last_level = -1;
+  var optsData = "";
+  var val = "";
+  var menu = document.getElementById("dropmenu");
+  var menuItems = menu.querySelectorAll("ul li");
+  menuItems.forEach(function (item) {
+    var source = item.textContent;
+    var matches = item.querySelector("a").attributes;
+    var attr = "";
+    var level = source.split("_").length - 1;
+    if (level > last_level) {
+      val += "<ul id='sec-level'>";
+    } else if (level < last_level) {
+      var offset = last_level - level;
+      for (var i = 0; i < offset; i++) {
+        val += "</ul></li>";
+      }
+    }
+
+    for (var i = 0; i < matches.length; i++) {
+      let a = matches[i];
+      attr += ` ${a.name}="${a.value}"`;
+    }
+
+    source = source.replace(/_/gi, "");
+    val += `<li><a${attr}>`;
+    for (var i = 0; i < level; i++) {
+      val += "";
+    }
+    val += source + "</a>";
+    last_level = level;
+  });
+  for (var i = 0; last_level >= i; i++) {
+    val += "</ul>";
+    if (i !== 0) {
+      val += "</li>";
+    }
+  }
+  menu.innerHTML = val;
+  menu.querySelector("ul").id = "menu1";
+  document.querySelectorAll("#menu1 > li > ul").forEach(function (e) {
+    e.id = "sub-menu";
+  });
+
+  /*open close*/
+  var openmenu = null;
+  menu.querySelectorAll("li a:not(:only-child)").forEach(function (submenu) {
+    submenu.addEventListener("click", () => {
+      var sub = submenu.nextElementSibling;
+      if (openmenu && openmenu !== sub && openmenu.id === "sec-level") {
+        openmenu.style.display = "none";
+      }
+      if (sub.style.display === "block") {
+        sub.style.display = "none";
+        openmenu = null;
+      } else {
+        sub.style.display = "block";
+        openmenu = sub;
+      }
+    });
+  });
+
+  _("#dropmenu li a").each(function (el) {
+    _(el).on("click", function () {
+      let locationAttr = _(this).attr("location");
+      let location = window.location,
+      path = location.pathname,
+      add = location.origin,
+      str = '?page='
+
+      if(locationAttr.includes(".")) {
+        window.open(add + locationAttr)
+      }else{
+        window.open(add + path + str + locationAttr)
+      }
+
+    });
+  });
+
+  // setting
+  let settings = [
+    {
+      id: "background-color",
+      label: "backgroundColor:",
+      type: "text",
+      type2: "color",
+      value: "unset",
+    },
+    {
+      id: "header-color",
+      label: "headerColor:",
+      type: "text",
+      type2: "color",
+      value: "unset",
+    },
+    {
+      id: "header-background",
+      label: "header Background:",
+      type: "text",
+      value: "unset",
+      type2: "color",
+    },
+    {
+      id: "background-image",
+      type: "file",
+      label: "uploadCustomBg",
+      value: ``,
+    },
+    {
+      id: "remove-background-image",
+      type: "button",
+      value: "remove",
+      label: "remove BgImage",
+    },
+    {
+      id: "form-label-color",
+      type2: "color",
+      label: "Label Color",
+      value: "unset",
+      type: "text",
+    },
+    {
+      type: "select",
+      options: [
+        { value: "left", label: "Left" },
+        { value: "right", label: "right" },
+        { value: "center", label: "Center" },
+      ],
+      label: "Header Text Align:",
+      id: "header-text-alight",
+    },
+    {
+      id: "ff-font-family",
+      label: "Font-Family",
+      type: "select",
+      options: [
+        { value: "unset", label: "Default" },
+        { value: "b612monor", label: "B612 Mono" },
+        { value: "edosz", label: "Edosz" },
+        { value: "greatVibesR", label: "GreatVibes" },
+        { value: "grandhotelR", label: "grandhotelR" },
+      ],
+    },
+  ];
+
+  createSettingsPage("setting-page", "Settings", settings);
+});
+
+
 var currentEdit = null;
 let currentTest = null;
 var currentEditS = null;
