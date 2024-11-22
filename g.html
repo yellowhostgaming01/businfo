@@ -10,6 +10,57 @@
   </head>
   <body>
 
+    <div class="yhg-login">
+      <div class="login-container">
+        <div class="login-form">
+          <h2>Admin Login</h2>
+          <form>
+            <div class="input-field">
+              <input type="text" id="username" required />
+              <label for="username"><i class="fas fa-user"></i> Username</label>
+            </div>
+            <div class="input-field">
+              <input type="password" id="password" required />
+              <label for="password"><i class="fas fa-lock"></i> Password</label>
+            </div>
+            <button type="submit">Login</button>
+          </form>
+          <div class="links">
+            <a open=".forgot-container,.login-container" clickable="clickable"
+              >Forgot Password?</a
+            >
+          </div>
+        </div>
+      </div>
+  
+      <div class="forgot-container" style="display: none">
+        <div class="forgot-panel">
+          <h2>Forgot Password</h2>
+          <form id="forgot-form">
+            <div class="input-field">
+              <input type="email" id="email" required />
+              <label for="email"><i class="fas fa-phone"></i> Enter Email</label>
+            </div>
+            <button type="button" id="verify-email">
+              <span
+                id="loading-spinner"
+                class="loading-spinner"
+                style="display: none"
+              ></span>
+              <span id="button-text">Verify Email</span>
+            </button>
+          </form>
+          <div style="display: none;" class="error-message" id="error-message">
+              <span>Beta jake pehle apna gmail pta karo ki kisse login hoga</span>
+          </div>
+          <div style="display: none;" class="password-section" id="password-section">
+            <h3>Your Password: <span id="password"></span></h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
     <header class="header" style="opacity: 1; visibility: visible">
       <span class="menu-icon" onclick=""><i class="opf opf-menu"></i></span>
       <div class="header-area section" id="header-area">
@@ -28,10 +79,9 @@
             </div>
             <div id="dropmenu">
               <ul id="menu1">
-                
                 <li><a location="bus_data">Bus List</a></li>
                 <li><a location="cities">stop List</a></li>
-                <li><a location="/businfo/index.html">Main</a></li>
+                <li><a location="/index.html">Main</a></li>
               </ul>
             </div>
             <div class="clear"></div>
@@ -40,6 +90,11 @@
       </div>
     </header>
 
+    <div class="contant-main">
+      <div class="indrodunction">
+        <h2>Bus Info</h2>
+      </div>
+    </div>
 
     <div class="container fixed" id="editFormContainer" style="display: none">
       <h1>
@@ -81,11 +136,26 @@
     <div class="container table-container" id="List">
       <h2><span>Bus</span> List</h2>
       <hr />
+      <div class="search-list">
+        <h2>Search <span>bus</span></h2>
+        <div>
+          <input type="text" name="" id="" />
+          <span><i class="fa fa-search"></i><i></i><i></i></span>
+        </div>
+      </div>
       <div class="table-wrapper">
         <table id="busTable">
           <thead></thead>
           <tbody></tbody>
         </table>
+      </div>
+      <div class="page-list">
+        <span>showing  0 to 8 of total bus</span>
+        <div>
+          <span class="active"><i class="fa fa-arrow-left"></i></span>
+          <div class="numbers"></div>
+          <span><i class="fa fa-arrow-right"></i></span>
+        </div>
       </div>
     </div>
     <button id="addDataButton" class="floating-button">Add Data</button>
@@ -95,7 +165,9 @@
     <script src="https://www.gstatic.com/firebasejs/6.0.2/firebase.js"></script>
     <script src="assets/lib/yhgquery.js"></script>
     <script src="assets/lib/yhg_serialize.js"></script>
-    <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fbus_data.js?alt=media&token=0ec20260-0961-4643-98ba-a072cc403338"></script>
+    <script src="assets/bundle/bus.js"></script>
+    <script src="assets/bundle/cities.js"></script>
+    <!-- <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fbus_data.js?alt=media&token=0ec20260-0961-4643-98ba-a072cc403338"></script> -->
     <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fcities.js?alt=media&token=ec4e647d-f887-461b-9dc7-f409d4ace02c"></script>
     <script src="assets/lib/custom/custom.js"></script>
     <script src="script.js"></script>

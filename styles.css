@@ -5,95 +5,95 @@
   -webkit-tap-highlight-color: transparent;
 }
 :root {
-  --bgc: #1E1E1E;
+  --bgc: #1e1e1e;
   /* Original background color */
-  --txt: #E1E1E1;
+  --txt: #e1e1e1;
   /* Original text color */
-  --primary: #3498DB;
+  --primary: #3498db;
   /* Blue for primary elements */
-  --secondary: #E74C3C;
+  --secondary: #e74c3c;
   /* Red for highlights or accents */
-  --accent: #1ABC9C;
+  --accent: #1abc9c;
   /* Mint green for buttons or interactive elements */
 
   /* Gradient Colors */
-  --gradient-purple: linear-gradient(135deg, #9B59B6, #8E44AD);
+  --gradient-purple: linear-gradient(135deg, #9b59b6, #8e44ad);
   /* Purple gradient */
-  --gradient-blue: linear-gradient(135deg, #2980B9, #6DD5ED);
+  --gradient-blue: linear-gradient(135deg, #2980b9, #6dd5ed);
   /* Blue gradient */
-  --gradient-blue-purple: linear-gradient(135deg, #8E44AD, #3498DB);
+  --gradient-blue-purple: linear-gradient(135deg, #8e44ad, #3498db);
   /* Blue-Purple gradient */
-  --gradient-teal: linear-gradient(135deg, #1ABC9C, #16A085);
+  --gradient-teal: linear-gradient(135deg, #1abc9c, #16a085);
   /* Teal gradient */
-  --gradient-orange: linear-gradient(135deg, #F39C12, #E67E22);
+  --gradient-orange: linear-gradient(135deg, #f39c12, #e67e22);
   /* Orange gradient */
-  --gradient-red: linear-gradient(135deg, #E74C3C, #C0392B);
+  --gradient-red: linear-gradient(135deg, #e74c3c, #c0392b);
   /* Red gradient */
-  --gradient-pink: linear-gradient(135deg, #FF6F61, #D66B87);
+  --gradient-pink: linear-gradient(135deg, #ff6f61, #d66b87);
   /* Pink gradient */
-  --gradient-indigo: linear-gradient(135deg, #5B2C6F, #8E44AD);
+  --gradient-indigo: linear-gradient(135deg, #5b2c6f, #8e44ad);
   /* Indigo gradient */
 
   /* Gray Tones for Professional Look */
-  --light-gray-bg: #F0F0F0;
+  --light-gray-bg: #f0f0f0;
   /* Light gray for input backgrounds */
-  --dark-gray-bg: #4B4B4B;
+  --dark-gray-bg: #4b4b4b;
   /* Dark gray for hover effects or secondary backgrounds */
-  --light-gray-txt: #D3D3D3;
+  --light-gray-txt: #d3d3d3;
   /* Light gray for softer text */
-  --medium-gray-txt: #B0B0B0;
+  --medium-gray-txt: #b0b0b0;
   /* Medium gray for headings */
-  --dark-gray-txt: #8C8C8C;
+  --dark-gray-txt: #8c8c8c;
   /* Dark gray for secondary text or details */
-  --link-gray-txt: #A6A6A6;
+  --link-gray-txt: #a6a6a6;
   /* Gray for hyperlinks */
 
   /* Misc Colors */
-  --success: #2ECC71;
+  --success: #2ecc71;
   /* Green for success messages */
-  --warning: #F39C12;
+  --warning: #f39c12;
   /* Orange for warnings */
-  --error: #E74C3C;
+  --error: #e74c3c;
   /* Red for error messages */
-  --info: #3498DB;
+  --info: #3498db;
   /* Blue for informational messages */
 
   /* Additional Colors */
-  --sunny-yellow: #F1C40F;
+  --sunny-yellow: #f1c40f;
   /* Bright yellow for cheerful elements */
-  --deep-orange: #E67E22;
+  --deep-orange: #e67e22;
   /* Deep orange for warm highlights */
-  --ocean-blue: #1F8EF1;
+  --ocean-blue: #1f8ef1;
   /* Bright ocean blue for active elements */
-  --lavender: #E8DAEF;
+  --lavender: #e8daef;
   /* Soft lavender for backgrounds or accents */
-  --soft-pink: #FADBD8;
+  --soft-pink: #fadbd8;
   /* Soft pink for gentle touches */
-  --mint: #A2D9CE;
+  --mint: #a2d9ce;
   /* Fresh mint green for accents */
-  --coral: #FF6B61;
+  --coral: #ff6b61;
   /* Vibrant coral for interactive elements */
-  --steel-blue: #4682B4;
+  --steel-blue: #4682b4;
   /* Cool steel blue for text and highlights */
-  --gold: #FFD700;
+  --gold: #ffd700;
   /* Gold for luxurious elements */
 
   /* Purple Shades */
-  --light-purple: #D7B2E3;
+  --light-purple: #d7b2e3;
   /* Light purple for softer backgrounds or accents */
-  --medium-purple: #9B59B6;
+  --medium-purple: #9b59b6;
   /* Medium purple for primary elements */
-  --dark-purple: #5D0689;
+  --dark-purple: #5d0689;
   /* Dark purple for strong accents */
-  --deep-purple: #5E4B8C;
+  --deep-purple: #5e4b8c;
   /* Deep purple for rich backgrounds */
-  --lavender-purple: #BFA2D9;
+  --lavender-purple: #bfa2d9;
   /* Soft lavender purple for highlights */
-  --purple-royal: #6A0EAD;
+  --purple-royal: #6a0ead;
   /* Royal purple for striking elements */
 
   /* Neutral Colors */
-  --white: #FFFFFF;
+  --white: #ffffff;
   /* White color for backgrounds or text */
   --black: #000000;
   /* Black color for text or backgrounds */
@@ -101,11 +101,11 @@
 body {
   font-family: "Roboto", sans-serif;
   background-color: #f0f2f5;
-  display: flex;
+  /* display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  height: 100vh;
+  flex-direction: column; */
+  max-height: 100vh;
   user-select: none;
 }
 
@@ -116,17 +116,24 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 900px;
-  margin: 5% 0;
+  position: absolute; /* Keep position absolute */
+  top: 50%; /* Position it halfway from the top */
+  left: 50%; /* Position it halfway from the left */
+  transform: translate(
+    -50%,
+    -50%
+  ); /* Offset by 50% of its own size to center it */
+  margin: 0 auto; /* Center horizontally */
   transition: transform 0.3s ease;
 }
 
 .container:hover {
-  transform: translateY(-5px);
+  transform: translate(-50%, -50%) translateY(-5px); /* Moves the container up by 5px on hover */
 }
 
 .container.fixed {
   position: fixed;
-  top: 5%;
+  top: calc(5% + 52px);
   left: 50%;
   transform: translate(-50%);
   width: 80%;
@@ -192,11 +199,95 @@ button:hover {
 .table-wrapper {
   overflow: auto;
   border: 1px solid #ddd;
-  max-height: 500px;
+  max-height: 400px;
   border-radius: 6px;
-  margin: 5% 0;
+  /* margin: 5% 0; */
+}
+.search-list {
+  display: inline-flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 5px;
+
+  h2 {
+    flex-grow: 1;
+    text-align: center;
+    margin-bottom: 0;
+  }
+
+  div {
+    input {
+      padding: 5px;
+      margin-bottom: 0;
+    }
+
+    i {
+      cursor: pointer;
+    }
+
+    i:hover {
+      color: #1abc9c;
+    }
+  }
 }
 
+.page-list div div span.active {
+  background-color: #fff !important;
+}
+
+.page-list {
+  display: inline-flex;
+  width: 100%;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin: 5px;
+
+  > div {
+    div {
+      display: inline-block;
+      margin: 0;
+
+      span {
+        margin: 3px;
+      }
+
+      span.active {
+        background-color: var(--txt);
+        color: var(--bgc);
+      }
+    }
+
+    span {
+      background-color: var(--info);
+      padding: 5px;
+      color: var(--txt);
+      min-width: 30px !important;
+      display: inline-block;
+      text-align: center;
+      transition: background-color 0.5s ease;
+    }
+
+    > span {
+      background-color: var(--dark-gray-txt);
+      color: var(--bgc);
+    }
+    > span.active {
+      background-color: var(--light-gray-txt);
+      color: var(--dark-gray-bg);
+    }
+    > span.active:hover {
+      cursor: context-menu;
+      background-color: var(--light-gray-txt);
+      color: var(--dark-gray-bg);
+    }
+    > span:hover {
+      cursor: pointer;
+      background-color: var(--accent);
+      color: var(--soft-pink);
+    }
+  }
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -204,7 +295,7 @@ table {
 
 th,
 td {
-  padding: 12px;
+  padding: 10px;
   border: 1px solid #ddd;
   text-align: left;
   max-width: 200px;
@@ -223,7 +314,6 @@ th {
 td:hover {
   background-color: #f1f1f1;
 }
-
 
 .icon {
   cursor: pointer;
@@ -388,7 +478,8 @@ td:hover {
 .header {
   padding: 0.5em 1em;
   background: linear-gradient(to right, #2e0435, #c0367a);
-  position: fixed;
+  position: sticky;
+  margin: 0;
   top: 0;
   z-index: 9;
   display: flex;
@@ -411,7 +502,7 @@ td:hover {
 .header h1 {
   font-size: 25px;
   font-weight: 500;
-  color: #E1E1E1;
+  color: #e1e1e1;
 }
 
 .header #header-inner h1 a {
@@ -466,9 +557,12 @@ td:hover {
   margin-right: 21px;
 }
 @media screen and (max-width: 600px) {
+  body {
+    padding: 0;
+  }
   .header {
     padding: 0.5em 1em;
-    background: linear-gradient(to right, #2E0435, #C0367A);
+    background: linear-gradient(to right, #2e0435, #c0367a);
     position: fixed;
     top: 0;
     z-index: 9;
@@ -478,88 +572,88 @@ td:hover {
     max-height: 52px;
     height: 52px;
   }
-  
+
   .header-area {
     align-items: center;
     width: 100%;
     margin: auto;
   }
-  
+
   .header h1 {
     font-size: 25px;
     font-weight: 500;
     color: var(--txt);
   }
-  
+
   .header #header-inner h1 a {
-    color: #FFFFFF;
+    color: #ffffff;
   }
-  
+
   .header img {
     width: 100%;
     max-width: 300px;
     margin: auto;
   }
-  
+
   .header .LinkList h2 {
     display: none;
   }
-  
+
   .header li a {
     padding: 12px;
     font-size: 17px;
     font-weight: 600;
   }
-  
+
   .header #sub-menu li {
     border-bottom: 1px solid #ddd;
   }
-  
+
   .header #sub-menu li a {
     font-weight: 500;
   }
-  
+
   #sec-level li {
     border-top: 1px solid #ddd;
   }
-  
+
   .header a {
     color: #000;
     display: block;
-    text-decoration: none
+    text-decoration: none;
   }
-  
+
   .header li:hover {
     background: #f8f8f8;
     border-bottom: 2px solid #2b92ff;
   }
-  
+
   .header li {
     list-style: none;
     padding: 0;
     margin: 0;
-    text-indent: 0
+    text-indent: 0;
   }
-  
-  .header li:hover>a {
-    color: #2B92FF;
+
+  .header li:hover > a {
+    color: #2b92ff;
   }
-  
+
   #menu1 li a:not(:only-child):after {
-    content: '\f107';
+    content: "\f107";
     padding-left: 7px;
-    font-family: 'Font Awesome 5 free';
+    font-family: "Font Awesome 5 free";
     float: right;
     clear: both;
     font-weight: 600;
   }
-  
+
   .header .fa-search {
     font-size: 30px;
     display: block;
     cursor: pointer;
   }
-  
+
   #search-box {
     position: fixed;
     right: -100%;
@@ -574,15 +668,15 @@ td:hover {
     padding-right: 1em;
     margin-left: auto;
     display: flex;
-    transition: .5s;
-    box-shadow: 0 3px 6px #CBCBCB;
+    transition: 0.5s;
+    box-shadow: 0 3px 6px #cbcbcb;
   }
-  
+
   #search-box .opt-clear {
     margin: 0 !important;
     padding: 0;
   }
-  
+
   #search-box input {
     height: 40px;
     border: 1px solid #e6eaea;
@@ -590,13 +684,13 @@ td:hover {
     padding: 2px 12px 2px 20px;
     width: 100%;
     outline: none;
-    color: #A300FF;
+    color: #a300ff;
   }
-  
+
   .clear {
-    clear: both
+    clear: both;
   }
-  
+
   .closebtn {
     font-size: 40px;
     color: #6e7676;
@@ -605,19 +699,19 @@ td:hover {
     margin-left: 7px;
     cursor: pointer;
   }
-  
+
   .header .menu-icon {
     font-size: 30px;
     display: flex;
-    color: #F1AA0C;
+    color: #f1aa0c;
     cursor: pointer;
   }
-  
+
   .header .nav-head {
     display: block;
     padding: 1em;
   }
-  
+
   .header .menu-close {
     font-size: 50px;
     position: absolute;
@@ -627,21 +721,21 @@ td:hover {
     text-align: center;
     cursor: pointer;
   }
-  
+
   .menu-close .opf-clear {
-    font-size: 40px
+    font-size: 40px;
   }
-  
+
   .nav-head h1 {
     text-align: center;
     font-size: 22px;
   }
-  
+
   .header #Header1 {
     width: 100%;
     text-align: center;
   }
-  
+
   .header .LinkList {
     background-color: #fcfcfc;
     width: 300px;
@@ -655,22 +749,22 @@ td:hover {
     overflow-y: auto;
     box-shadow: 0px 0px 35px #9f9f9f;
   }
-  
+
   @media screen and (max-width: 350px) {
     .header .LinkList {
       width: 80%;
     }
   }
-  
+
   .header #menu1 {
     display: block;
     padding: 0;
   }
-  
+
   #menu1:last-child {
     border-bottom: 1px solid #ddd;
   }
-  
+
   .header #sub-menu,
   #sec-level {
     position: relative;
@@ -680,20 +774,20 @@ td:hover {
     display: none;
     margin-left: 0;
   }
-  
+
   .header #sec-level {
     padding-left: unset;
     padding-left: 10px;
   }
-  
+
   #sub-menu li a {
     font-weight: 600;
   }
-  
+
   #sec-level li a {
     font-weight: unset;
   }
-  
+
   .header #sub-menu li a:before {
     content: "\f105";
     font-family: "font awesome 5 free";
@@ -701,24 +795,224 @@ td:hover {
     font-size: 12px;
     margin-right: 8px;
   }
-  
-  .header #menu1>li {
+
+  .header #menu1 > li {
     border-top: 1px solid #f3f3f3;
     padding-left: 2em;
   }
-  
+
   .opf-share {
     color: var(--txt);
     font-size: 24px;
     margin-right: 30px;
   }
-  
+
   .header .opf-search {
     color: var(--txt);
     font-size: 30px;
   }
-  
+
   .header i {
     cursor: pointer;
   }
+}
+
+.indrodunction {
+  background-color: red;
+}
+
+
+/* Replace body with .yhg-login */
+.yhg-login {
+  background: linear-gradient(135deg, #00b4d8, #ff00b4); /* Vibrant Gradient */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  position: fixed;
+  z-index: 99999999;
+  width: 100vw;
+  overflow: hidden;
+
+  input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #fff !important;
+}
+}
+
+/* Glassmorphism Effect */
+.yhg-login .login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.yhg-login .login-form {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 15px;
+  padding: 40px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  text-align: center;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0px 15px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease-in-out;
+}
+
+.yhg-login .login-form:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.yhg-login h2 {
+  margin-bottom: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* Input field styles */
+.yhg-login .input-field {
+  position: relative;
+  margin: 20px 0;
+}
+
+.yhg-login .input-field input {
+  width: 100%;
+  padding: 15px 20px;
+  background: transparent;
+  border: 2px solid #fff;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  transition: 0.3s ease;
+}
+
+.yhg-login .input-field input:focus {
+  border-color: #00ffcc;
+  box-shadow: 0 0 5px #00ffcc;
+}
+
+.yhg-login .input-field label {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.3s ease;
+}
+
+.yhg-login .input-field input:focus ~ label,
+.yhg-login .input-field input:valid ~ label {
+  font-size: 0.8rem;
+  top: 10px;
+  transform: translateY(-120%);
+}
+
+/* Button Styles */
+.yhg-login button {
+  background: #00ffcc;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.yhg-login button:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(0, 255, 204, 0.15);
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.4);
+}
+
+/* Links */
+.yhg-login .links {
+  margin-top: 10px;
+}
+
+.yhg-login .links a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.yhg-login .links a:hover {
+  text-decoration: underline;
+}
+
+/* Loading Spinner */
+.yhg-login .loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid #00ffcc;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin-left: 10px;
+  animation: spin 1s ease-in-out infinite, fade 0.5s ease-in-out infinite;
+  display: inline-block;
+}
+
+/* Smooth Spinner Animation */
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* Fading Animation */
+@keyframes fade {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Button Animation - Add subtle hover effect */
+.yhg-login button {
+  position: relative;
+  padding: 15px 25px;
+  background: #00ffcc;
+  color: #000;
+  font-weight: 600;
+  border-radius: 8px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease, transform 0.3s ease;
+  overflow: hidden;
+}
+
+.yhg-login button:hover {
+  background: rgba(0, 255, 204, 0.15);
+  transform: translateY(-3px);
+  box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+/* Hide button text during loading */
+.yhg-login button:disabled #button-text {
+  display: none;
 }

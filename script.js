@@ -65,16 +65,28 @@ document.addEventListener("DOMContentLoaded", function () {
     _(el).on("click", function () {
       let locationAttr = _(this).attr("location");
       let location = window.location,
-      path = location.pathname,
-      add = location.origin,
-      str = '?page='
+        path = location.pathname,
+        add = location.origin;
 
-      if(locationAttr.includes(".")) {
-        window.open(add + locationAttr)
-      }else{
-        window.open(add + path + str + locationAttr)
+      if (locationAttr.includes(".")) {
+        // Check if a tab with the name is already open
+        let openedTab = window.open("", "uniqueTabName"); // Open a tab with a unique name
+        if (openedTab && !openedTab.closed) {
+          // If the tab is already open, reload it
+          openedTab.location.href = add + locationAttr;
+          openedTab;
+          openedTab.focus(); // Bring the tab to the front
+        } else {
+          // If no tab is open, open a new one
+          window.open(add + locationAttr, "uniqueTabName");
+        }
+      } else {
+        // Dynamically update search query in the same window
+        let searchParams = new URLSearchParams(location.search);
+        searchParams.set("page", locationAttr); // Update 'search' parameter with `locationAttr`
+        searchParams.set("yhg", "f");
+        window.location.search = searchParams.toString(); // Apply the updated query
       }
-
     });
   });
 
@@ -147,7 +159,6 @@ document.addEventListener("DOMContentLoaded", function () {
   createSettingsPage("setting-page", "Settings", settings);
 });
 
-
 var currentEdit = null;
 let currentTest = null;
 var currentEditS = null;
@@ -161,8 +172,52 @@ let fillersElt = {
   RV: document.querySelector(".yhg #route"),
 };
 let page = null;
+let peritem = 8;
+let currentPage = 1; // To track the current page
+
+var createPagination = function (totalPages) {
+  let elt = _(".numbers").html(""); // Clear previous pagination
+
+  for (let i = 1; i <= totalPages; i++) {
+    let btn = _("<span>").text(i).attr("data-page", i); // Assign the page number as a custom attribute
+
+    btn.on("click", function () {
+      // Handle different pages based on the `page` variable
+      switch (page) {
+        case "bus_data":
+          renderTable(i); // Call render function for bus_data
+          break;
+        case "cities":
+          renderStop(i); // Call render function for cities
+          break;
+        default:
+          _("#List").hide(); // Hide the list for other cases
+          page = null;
+          break;
+      }
+    });
+
+    // Append the button to the pagination container
+    elt.append(btn);
+  }
+
+  elt.find("span").each(function(f,q){
+    _(f).on('click', function(){
+      _(this).parent().remove()
+    })
+  })
+
+  // Optionally set the first button as active on initial load
+  // elt.find("span").first().addClass("active");
+};
 
 function serialize(pageType) {
+  var variables = window[pageType],
+    total = variables.length,
+    totalPages = Math.ceil(total / peritem);
+
+  createPagination(totalPages);
+
   if (pageType.split("_data")) {
     pageType = pageType.split("_data")[0];
   }
@@ -177,15 +232,16 @@ function serialize(pageType) {
     var data = list[type],
       thead = data.thead;
 
-    if (pageType !== null && capitalize(type.split("_data")[0]) === capitalize(pageType)) {
+    if (
+      pageType !== null &&
+      capitalize(type.split("_data")[0]) === capitalize(pageType)
+    ) {
       serializeEDITADDform(data);
       headingList.parentElement.parentElement
         .querySelector("thead")
         .appendChild(listMaker(thead, "th", "tr"));
     }
   });
-
-  
 }
 
 var serializeEDITADDform = function (data) {
@@ -194,40 +250,58 @@ var serializeEDITADDform = function (data) {
 
   var dropdown = document.querySelectorAll(".dropdown");
 
-
   dropdown.forEach(function (drop) {
     let dropAttr = drop.getAttribute("data-type");
     if (dropAttr == "stops") {
-      if(cities.length > 0) {
+      if (cities.length > 0) {
         cities.forEach((city) => {
           let elt = document.createElement("option");
-  
+
           elt.value = city.name;
           elt.textContent = city.name;
-  
+
           drop.appendChild(elt);
         });
       } else {
         let elt = document.createElement("option");
-          elt.value = 'not';
-          elt.textContent = 'no data';
+        elt.value = "not";
+        elt.textContent = "no data";
       }
     }
-    
+
     createCustomDropdown(drop);
   });
 };
 
-function renderTable() {
+function renderTable(pageNumber) {
   const tbody = document.getElementById("busTable").querySelector("tbody");
   tbody.innerHTML = "";
 
-  bus_data.forEach(function (category, index) {
+  // page creations
+  const totalItems = window[page].length;
+  const totalPages = Math.ceil(totalItems / peritem);
+
+  createPagination(totalPages);
+
+  currentPage = pageNumber;
+
+  const startIndex = (pageNumber - 1) * peritem;
+  // const endIndex = startIndex + peritem;
+  const endIndex = Math.min(startIndex + peritem, totalItems);
+
+  // Get the buses for the current page
+  const currentDatas = window[page].slice(startIndex, endIndex);
+
+  const pageInfoText = updatePageInfo(startIndex, endIndex, totalItems);
+  document.querySelector(".page-list span").textContent = pageInfoText;
+
+  currentDatas.forEach(function (category, index) {
     var from = category.from,
       to = category.to,
       stops = category.stops,
       ft = category.timings[0],
-      tt = category.timings[1];
+      tt = category.timings[1],
+      actualIndex = startIndex + index;
 
     const row = document.createElement("tr");
     const vendorCell = document.createElement("td");
@@ -264,15 +338,25 @@ function renderTable() {
     editIcon.addEventListener("click", () => {
       document.getElementById("editFormContainer").style.display = "block";
       currentEdit = null;
-      editData(category, index);
+      editData(category, actualIndex);
     });
 
     const removeIcon = document.createElement("span");
     removeIcon.textContent = "❌"; // Unicode for cross
     removeIcon.classList.add("icon");
     removeIcon.addEventListener("click", () => {
-      removeData(index);
-      renderTable();
+      const currentLength = window[page].length;
+      removeData(actualIndex);
+
+      // Determine the total pages after removing
+      const totalPages = Math.ceil((currentLength - 1) / peritem);
+
+      // Adjust the current page if necessary
+      if (currentPage > totalPages) {
+        currentPage = totalPages;
+      }
+
+      renderTable(currentPage);
     });
 
     actionsCell.appendChild(editIcon);
@@ -285,13 +369,32 @@ function renderTable() {
   });
 }
 
-function renderStop() {
+function renderStop(pageNumber) {
   const tbody = document.getElementById("busTable").querySelector("tbody");
   tbody.innerHTML = "";
 
-  cities.forEach(function (data, index) {
+  // page creations
+  const totalItems = window[page].length;
+  const totalPages = Math.ceil(totalItems / peritem);
+
+  createPagination(totalPages);
+
+  currentPage = pageNumber;
+
+  const startIndex = (pageNumber - 1) * peritem;
+  // const endIndex = startIndex + peritem;
+  const endIndex = Math.min(startIndex + peritem, totalItems);
+
+  // Get the buses for the current page
+  const currentDatas = window[page].slice(startIndex, endIndex);
+
+  const pageInfoText = updatePageInfo(startIndex, endIndex, totalItems);
+  document.querySelector(".page-list span").textContent = pageInfoText;
+
+  currentDatas.forEach(function (data, index) {
     var name = data.name,
-      code = data.code;
+      code = data.code,
+      actualIndex = startIndex + index;
 
     const row = document.createElement("tr");
 
@@ -308,13 +411,26 @@ function renderStop() {
     actionsCell.appendChild(
       actionTool("✏️", "icon", function () {
         document.getElementById("editFormContainer").style.display = "block";
-        editcity(data, index);
+        editcity(data, actualIndex);
       })
     );
     actionsCell.appendChild(
       actionTool("❌", "icon", function () {
-        removeData(index);
-        renderStop();
+        const currentLength = window[page].length;
+
+        // Remove the data
+        removeData(actualIndex);
+
+        // Determine the total pages after removing
+        const totalPages = Math.ceil((currentLength - 1) / peritem);
+
+        // Adjust the current page if necessary
+        if (currentPage > totalPages) {
+          currentPage = totalPages;
+        }
+
+        // Render the correct page
+        renderStop(currentPage);
       })
     );
     // actionsCell.classList.add("actions");
@@ -324,7 +440,7 @@ function renderStop() {
 }
 
 // tools
-function normalizeTimeInput(time) {
+var normalizeTimeInput = function (time) {
   // Default to 8:00 am if no time is provided
   if (!time) return "08:00 am";
 
@@ -358,7 +474,7 @@ function normalizeTimeInput(time) {
   hours = String(hours).padStart(2, "0");
 
   return `${hours}:${minutes} ${period}`;
-}
+};
 
 var capitalize = function (str) {
   return str
@@ -399,7 +515,24 @@ var actionTool = function (textContent, classN, callback, tag) {
   return elt;
 };
 
+var updatePageInfo = function (startIndex, endIndex, totalItems) {
+  return `Showing ${
+    startIndex + 1
+  } to ${endIndex} out of ${totalItems} ${page}`;
+};
+
 var serializeDropdown = function () {};
+
+var serializePageType = function (type, options = {}) {
+  type = type.split("_")[0];
+  for (let key in options) {
+    if (options[key] === true && typeof window[key] === "function") {
+      // Call the function in the window object if the key is true and the function exists
+      type = window[key](type);
+    }
+  }
+  return type;
+};
 
 function addEditStops(stop, index) {
   const stpNElt = document.getElementById("stopName-sdsh"),
@@ -584,7 +717,11 @@ function editData(bus, index) {
       HV.value = "";
       RV.value = "";
       _(".dropdownlists").html("");
-      renderTable();
+
+      const totalPages = Math.ceil(bus_data.length / peritem);
+      createPagination(totalPages);
+      const pageToShow = Math.ceil((index + 1) / peritem);
+      renderTable(pageToShow);
     }
 
     currentEdit = null;
@@ -601,13 +738,13 @@ function editData(bus, index) {
 var removeData = function (index) {
   // Ensure that the page and index are valid before deleting
   if (window[page] && window[page].hasOwnProperty(index)) {
-    window[page].splice(index, 1) // Removes the property from the object
+    window[page].splice(index, 1); // Removes the property from the object
+
     console.log(`Property at index ${index} has been removed.`);
   } else {
     console.log(`Property at index ${index} not found or page does not exist.`);
   }
 };
-
 
 // bus
 function addBus() {
@@ -625,7 +762,7 @@ function addBus() {
   editData(bus_data[length], length);
 }
 
-function editcity(city, index) {
+function editcity(yhg, index) {
   var data = cities[index];
   var name = data.name,
     code = data.code;
@@ -646,9 +783,13 @@ function editcity(city, index) {
       data.name = capitalize(nameV.value);
       data.code = capitalize(codeV.value);
       document.getElementById("editFormContainer").style.display = "none";
-      renderStop();
+
       nameV.value = "";
       codeV.value = "";
+      const totalPages = Math.ceil(cities.length / peritem);
+      createPagination(totalPages);
+      const pageToShow = Math.ceil((index + 1) / peritem);
+      renderStop(pageToShow);
     });
 }
 
@@ -664,17 +805,20 @@ function addCities() {
 
 // urls setup
 document.ready(function () {
-  var pathnmae = location.href;
-  var splits = pathnmae.split("?page=")[1];
-  page = splits;
-  switch (splits) {
+  // Get the current URL's query parameters
+  var urlParams = new URLSearchParams(location.search);
+  var searchParam = urlParams.get("page");
+  page = searchParam;
+
+  // Perform actions based on the `search` parameter value
+  switch (page) {
     case "bus_data":
-      renderTable();
+      renderTable(1);
       // serializeDropdown()
       _("#List").show();
       break;
     case "cities":
-      renderStop();
+      renderStop(1);
       _("#List").show();
       break;
     default:
@@ -683,8 +827,10 @@ document.ready(function () {
       break;
   }
 
+  // Serialize based on the page value
   serialize(page);
 });
+
 document.ready(function () {
   const firebaseConfig = {
     apiKey: "AIzaSyDXwgdo0zLt4QpBt9X-V1R4c8FkOBen-t4",
@@ -714,33 +860,36 @@ document.ready(function () {
   saveDataButton.addEventListener("click", function () {
     // Get the object from window[page]
     const pageData = window[page];
-  
-    if (typeof pageData !== 'object') {
+
+    if (typeof pageData !== "object") {
       console.error("Invalid page data: Not an object");
       return;
     }
-  
+
     // Convert the object to a JSON string
     const jsonData = JSON.stringify(pageData, null, 2); // Formatting for readability
-  
+
     // Create a Blob from the JSON string
-    const file = new Blob(["var " + page + "=" + jsonData], { type: "text/javascript" });
-  
+    const file = new Blob(["var " + page + "=" + jsonData], {
+      type: "text/javascript",
+    });
+
     // Generate a unique file name (or use page as the file name)
-    const fileName = `${page}.js`;  // Using `.json` extension for the object data
-  
+    const fileName = `${page}.js`; // Using `.json` extension for the object data
+
     // Create a reference in Firebase storage
     const storageRef = storage.ref(`businfoUS/${fileName}`);
-  
+
     // Start uploading the file
     const uploadTask = storageRef.put(file);
-  
+
     // Track upload progress
     uploadTask.on(
       "state_changed",
       (snapshot) => {
         // Calculate the progress percentage
-        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        const progress =
+          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
         console.log(`Upload is ${progress.toFixed(2)}% done`);
       },
       (error) => {
@@ -754,17 +903,114 @@ document.ready(function () {
       }
     );
   });
-  
 
   _(addDataButton).on("click", function (e) {
     e.preventDefault();
     document.getElementById("editFormContainer").style.display = "block";
     window["add" + _(this).attr("open")]();
   });
-
-  
 });
 
-document.getElementById("saveChanges").addEventListener("click", function () {
-  // bus_data"
+document.addEventListener("DOMContentLoaded", function () {
+  var userFound = false;
+  // Define users with their usernames and passwords
+  var users = {
+    "yellowhostgaming1@gmail.com": {
+      UN: "Yellow Host Gaming",
+      password: "businfoYHGINDIAN",
+    },
+  };
+  let identify = localStorage.getItem("userFound");
+  userFound = cheker("false", identify, undefined, false);
+  // Button click event for handling form submission
+  let btns = document.querySelectorAll("[clickable]");
+
+  btns.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      let str = this.getAttribute("open").split(",");
+      document.querySelector(str[0]).style.display = "block";
+      document.querySelector(str[1]).style.display = "none";
+    });
+  });
+
+  // Verify email button click logic
+  document
+    .querySelector("#verify-email")
+    .addEventListener("click", function () {
+      var button = this;
+      var spinner = document.getElementById("loading-spinner");
+      var buttonText = document.getElementById("button-text");
+
+      spinner.style.display = "inline-block";
+      buttonText.style.display = "none";
+      button.disabled = true; // Disable the button to prevent multiple clicks
+
+      setTimeout(function () {
+        // After the action completes, hide the spinner and show the text
+        spinner.style.display = "none";
+        buttonText.style.display = "inline";
+        button.disabled = false;
+        validateEmail();
+      }, 3000);
+    });
+
+  // Function to validate email and display the password if correct
+  function validateEmail() {
+    var email = document.getElementById("email").value; // Get the email input value
+    var passwordSection = document.getElementById("password-section");
+    var passwordElement = document.getElementById("password");
+    var errorMessage = document.getElementById("error-message");
+
+    // Check if the email is valid
+    if (users[email]) {
+      // If email exists in users, show the password section
+      passwordSection.style.display = "block";
+      passwordElement.textContent = users[email].password; // Display password
+      errorMessage.style.display = "none"; // Hide error message
+    } else {
+      // If email doesn't exist in users, show error message and reload page
+      passwordSection.style.display = "none";
+      errorMessage.style.display = "block"; // Show error message
+      errorMessage.textContent =
+        "Invalid email address. Please check your Gmail address."; // Customize the error message
+
+      // Reload the page and show an alert
+      setTimeout(function () {
+        alert("Beta ja ke apni info leke aa");
+        location.reload(); // Refresh the page
+      }, 2000); // Wait for 2 seconds before refreshing
+    }
+  }
+
+  // Handle the login form submission
+  document.querySelector("form").addEventListener("submit", function (event) {
+    event.preventDefault(); // Prevent form submission
+
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+
+    // Check if the entered username and password match any user
+    for (var email in users) {
+      if (users[email].UN === username && users[email].password === password) {
+        userFound = true;
+        localStorage.setItem("userFound", "true");
+        break;
+      }
+    }
+
+    if (!userFound) {
+      alert("Invalid username or password.");
+      // Refresh the page if login fails
+      localStorage.setItem("userFound", "false");
+      setTimeout(function () {
+        location.reload(); // Refresh the page
+      }, 2000); // Wait for 2 seconds before refreshing
+    } else {
+      _(".yhg-login").remove();
+    }
+  });
+
+  if (userFound) {
+    _(".yhg-login").remove();
+  }
 });
