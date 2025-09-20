@@ -187,6 +187,7 @@ document.addEventListener("DOMContentLoaded", function () {
 /*global*/
 
 /*handlers*/
+// search cities
 var handlerSC = function (parentelt) {
   parentelt.find("div.suggestions-main-scd").each(function (elt) {
     elt.addEventListener("click", function () {
@@ -215,6 +216,7 @@ var handlerSC = function (parentelt) {
   });
 };
 
+// search bus
 var handlerSB = function (parentelt) {
   parentelt.find("div.select-cities").each(function (elt) {
     elt.addEventListener("click", function () {
@@ -258,13 +260,12 @@ var info_handler = function (usrft, bus) {
     tot = bus.timings[1],
     stops = bus.stops,
     dis = "0";
-
   var tbody = _(".table-data-bi tbody");
   var fromdata = _("<tr>"),
     todata = _("<tr>");
 
-  if (usrft.from === from) {
-    fromdata.addClass("usrActive");
+  if (usrft.from.trim().toLowerCase() === from.trim().toLowerCase()) {
+    fromdata.addClass("usrActive userActiveFrom");
   }
 
   fromdata
@@ -293,8 +294,9 @@ var info_handler = function (usrft, bus) {
 
     tbody.append(stopData);
   });
+  
 
-  if (usrft.to === to) {
+  if (usrft.to.trim().toLowerCase() === to.trim().toLowerCase()) {
     todata.addClass("usrActive");
   }
 
@@ -370,7 +372,7 @@ var select_cities = function (appendant) {
   var dropdownC = _("<div>").addClass("sc-content-dropdown");
 
   cities.forEach(function (object) {
-    let name = capitalize(object.name),
+    let name = object.name,
       code = object.code.toUpperCase();
 
     let cc = _("<div>").addClass("city-code-scd").html(code);
@@ -401,6 +403,7 @@ var select_cities = function (appendant) {
   handlerSC(dropdownC);
 };
 
+//main from tab
 var search_busses = function () {
   var main,
     parent = _(".form-data-main-table");
@@ -482,7 +485,6 @@ var result_data = function (results, usrTF) {
           `<div class="rdc-bus-locations"><span>${bus.from}</span> to <span>${bus.to}</span></div>`
         )
         .on("click", function () {
-          // remove_content("result-data-main");
           info_handler(usrTF, bus);
         });
 
