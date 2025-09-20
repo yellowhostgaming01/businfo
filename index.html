@@ -56,6 +56,12 @@
     </div>
   </div> -->
 
+    <div class="contant-main">
+      <div class="indrodunction">
+        <!-- <h2>Bus Info</h2> -->
+      </div>
+    </div>
+
     <!--tabs-->
     <div class="tabs-main-table" bcnavigation="Home">
       <div class="tabs-tab1" work="search_busses">
@@ -86,10 +92,81 @@
 
     <div class="form-data-main-table"></div>
   </body>
+  <script src="assets/bundle/data.fetching.js"></script>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      getDocs,
+    } from "https://www.gstatic.com/firebasejs/12.3.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAHP-EQhADXl9ZjtG1MgDrcQn9rK6mSrjs",
+      authDomain: "businfo-yhgindian.firebaseapp.com",
+      projectId: "businfo-yhgindian",
+      storageBucket: "businfo-yhgindian.firebasestorage.app",
+      messagingSenderId: "108457341569",
+      appId: "1:108457341569:web:4cb2c4ee15c61c9c195380",
+      measurementId: "G-DW7H5KPDPX",
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Fetch Bus Data
+    async function fetchBusData() {
+      const busCol = collection(db, "BusInfo");
+      const busSnapshot = await getDocs(busCol);
+
+      const busListRaw = busSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const bus_data = busListRaw.map((bus) => ({
+        vendor: bus.Vendor || "",
+        from: bus.From || "",
+        to: bus.To || "",
+        stops: (bus.Stops || []).map((s) => ({
+          name: s.Station || "",
+          timings: [s.Arrival || "", s.Departure || ""],
+          distance: s.Distance || "",
+        })),
+        timings: bus.Time || [],
+        route: bus.Route || "",
+        handler: bus.Depot || "",
+      }));
+
+      window.bus_data = bus_data; // global variable
+      return bus_data;
+    }
+
+    // Fetch Cities Data
+    async function fetchCities() {
+      const cityCol = collection(db, "CityInfo");
+      const citySnapshot = await getDocs(cityCol);
+
+      const cityListRaw = citySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+
+      const cities = cityListRaw.map((city) => ({
+        name: city.CityName || "",
+        code: city.CityCode || "",
+      }));
+
+      window.cities = cities; // global variable
+      return cities;
+    }
+
+    // Call both functions
+    fetchBusData();
+    fetchCities();
+  </script>
+
   <script src="assets/lib/yhgquery.js"></script>
- <!-- <script src="assets/bundle/data.fetching.js"></script>-->
-  <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fbus_data.js?alt=media&token=0ec20260-0961-4643-98ba-a072cc403338"></script>
-  <script src="https://firebasestorage.googleapis.com/v0/b/wsmfus.appspot.com/o/businfoUS%2Fcities.js?alt=media&token=ec4e647d-f887-461b-9dc7-f409d4ace02c"></script>
   <script src="assets/lib/custom/custom.js"></script>
   <script src="assets/bundle/app.bundle.js"></script>
 </html>
